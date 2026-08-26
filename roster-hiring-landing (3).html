@@ -1,0 +1,1580 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Roster — Hire faster</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Sora:wght@500;600;700;800&family=Inter:wght@400;500;600&family=Space+Mono:wght@400;700&display=swap" rel="stylesheet">
+<!--
+  PayPal Checkout SDK.
+  "sb" below is PayPal's public sandbox client ID — it lets you test the
+  full checkout flow but cannot receive real money.
+  To accept real payments: create a PayPal Business account, register an
+  app at https://developer.paypal.com/dashboard/applications, and replace
+  "sb" with your own live Client ID.
+-->
+<script src="https://www.paypal.com/sdk/js?client-id=BAAuond9b_LvXlvXE1eR5bWskfCmyDzLCpYnBwvyQPnAnzCcZv-qxG147eHhNPITCrqK82Mgrg3F_FO_ug&currency=USD"></script>
+<style>
+  :root{
+    --ink-900:#1B1130;
+    --violet-900:#221349;
+    --violet-800:#2C1866;
+    --violet-700:#3B23A8;
+    --violet-500:#6C4CF0;
+    --violet-200:#C9BBF5;
+    --lavender-100:#EFEAFB;
+    --amber-400:#F2A93B;
+    --amber-500:#E0951F;
+    --amber-600:#9C6710;
+    --paper:#FBFAF7;
+    --paper-dim:#F3F1EC;
+    --green-600:#1F9D55;
+    --green-100:#E3F6EA;
+    --gray-600:#6B6478;
+    --gray-400:#9990A6;
+    --white:#FFFFFF;
+    --line: rgba(27,17,48,0.10);
+    --shadow-soft: 0 20px 45px -20px rgba(27,17,48,0.35);
+    --shadow-card: 0 14px 30px -12px rgba(27,17,48,0.22);
+    --radius-lg: 20px;
+    --radius-md: 14px;
+    --radius-sm: 10px;
+  }
+
+  *{box-sizing:border-box;}
+  html{scroll-behavior:smooth;}
+  body{
+    margin:0;
+    background:var(--paper);
+    color:var(--ink-900);
+    font-family:'Inter',-apple-system,BlinkMacSystemFont,sans-serif;
+    -webkit-font-smoothing:antialiased;
+  }
+  h1,h2,h3, .display{
+    font-family:'Sora','Inter',sans-serif;
+    letter-spacing:-0.02em;
+    margin:0;
+  }
+  .mono{
+    font-family:'Space Mono',monospace;
+    letter-spacing:0.06em;
+    text-transform:uppercase;
+  }
+  a{color:inherit;text-decoration:none;}
+  button{font-family:inherit;cursor:pointer;}
+  img{max-width:100%;display:block;}
+  :focus-visible{outline:2.5px solid var(--amber-400); outline-offset:3px; border-radius:6px;}
+
+  .wrap{max-width:1220px;margin:0 auto;padding:0 32px;}
+
+  /* ---------- HERO / HEADER SHELL ---------- */
+  .hero-shell{
+    position:relative;
+    background:
+      radial-gradient(1100px 520px at 12% -10%, var(--violet-700) 0%, transparent 60%),
+      linear-gradient(160deg, var(--violet-800) 0%, var(--violet-900) 62%, var(--ink-900) 100%);
+    overflow:hidden;
+    padding-bottom:120px;
+  }
+  .hero-shell::after{
+    content:"";
+    position:absolute;
+    right:-10%;
+    bottom:-18%;
+    width:70%;
+    height:85%;
+    background:linear-gradient(135deg, rgba(108,76,240,0.35), rgba(27,17,48,0.05));
+    clip-path:polygon(38% 0%, 100% 0%, 100% 100%, 0% 100%);
+    pointer-events:none;
+  }
+
+  /* ---------- NAV ---------- */
+  nav{
+    position:relative;
+    z-index:30;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    padding:26px 32px;
+    max-width:1220px;
+    margin:0 auto;
+  }
+  .logo{
+    display:flex;align-items:center;gap:9px;
+    font-family:'Sora',sans-serif;
+    font-weight:700;
+    font-size:19px;
+    color:var(--white);
+  }
+  .logo-mark{
+    width:26px;height:26px;border-radius:7px;
+    background:linear-gradient(135deg, var(--amber-400), var(--violet-500));
+    display:inline-flex;align-items:center;justify-content:center;
+  }
+  .logo-mark svg{width:15px;height:15px;}
+  .nav-links{
+    display:flex;align-items:center;gap:30px;
+    list-style:none; margin:0; padding:0;
+  }
+  .nav-links a, .nav-drop > button{
+    color:rgba(255,255,255,0.88);
+    font-size:15px;
+    font-weight:500;
+    display:flex;align-items:center;gap:5px;
+    background:none;border:none;padding:0;
+  }
+  .nav-links a:hover, .nav-drop > button:hover{color:var(--white);}
+  .nav-drop{position:relative;}
+  .nav-drop svg{width:11px;height:11px;transition:transform .18s ease;}
+  .nav-drop.open svg{transform:rotate(180deg);}
+  .nav-drop-menu{
+    position:absolute;top:calc(100% + 14px);left:50%;transform:translateX(-50%);
+    background:var(--white);
+    border-radius:var(--radius-md);
+    box-shadow:var(--shadow-soft);
+    padding:10px;
+    min-width:190px;
+    display:none;
+    flex-direction:column;
+  }
+  .nav-drop.open .nav-drop-menu{display:flex;}
+  .nav-drop-menu a{
+    color:var(--ink-900);
+    font-size:14px;
+    padding:9px 12px;
+    border-radius:8px;
+  }
+  .nav-drop-menu a:hover{background:var(--lavender-100);}
+
+  .nav-right{display:flex;align-items:center;gap:20px;}
+  .nav-help{
+    display:flex;align-items:center;gap:6px;
+    color:rgba(255,255,255,0.85);
+    font-size:14.5px;font-weight:500;
+  }
+  .nav-help svg{width:17px;height:17px;}
+  .btn{
+    border-radius:999px;
+    font-weight:600;
+    font-size:14.5px;
+    padding:11px 22px;
+    border:1.5px solid transparent;
+    display:inline-flex;align-items:center;justify-content:center;
+    transition:transform .16s ease, box-shadow .16s ease, background .16s ease;
+  }
+  .btn:active{transform:scale(0.97);}
+  .btn-outline{
+    border-color:rgba(255,255,255,0.55);
+    color:var(--white);
+  }
+  .btn-outline:hover{border-color:var(--white); background:rgba(255,255,255,0.08);}
+  .btn-white{
+    background:var(--white);
+    color:var(--violet-700);
+  }
+  .btn-white:hover{box-shadow:0 8px 20px -6px rgba(0,0,0,0.35); transform:translateY(-1px);}
+  .divider-v{width:1px;height:22px;background:rgba(255,255,255,0.25);}
+  .nav-seeker{font-size:14.5px;font-weight:500;color:rgba(255,255,255,0.85);}
+  .nav-seeker:hover{color:var(--white);}
+
+  .hamburger{display:none;background:none;border:none;padding:6px;}
+  .hamburger span{display:block;width:22px;height:2px;background:var(--white);margin:5px 0;border-radius:2px;}
+
+  /* ---------- HERO CONTENT ---------- */
+  .hero-grid{
+    position:relative;
+    z-index:5;
+    display:grid;
+    grid-template-columns:1fr 1fr;
+    gap:40px;
+    align-items:center;
+    padding-top:52px;
+  }
+  .eyebrow{
+    color:var(--violet-200);
+    font-size:12.5px;
+    font-weight:700;
+    margin-bottom:18px;
+  }
+  .hero-copy h1{
+    color:var(--white);
+    font-size:clamp(46px,6vw,72px);
+    font-weight:700;
+    line-height:1.02;
+    margin-bottom:22px;
+  }
+  .hero-copy p{
+    color:rgba(255,255,255,0.78);
+    font-size:18px;
+    line-height:1.6;
+    max-width:420px;
+    margin-bottom:34px;
+  }
+  .btn-cta{
+    background:var(--amber-400);
+    color:#3A2205;
+    font-weight:700;
+    font-size:15.5px;
+    padding:15px 30px;
+    border-radius:12px;
+    box-shadow:0 14px 26px -10px rgba(242,169,59,0.55);
+  }
+  .btn-cta:hover{background:var(--amber-500); transform:translateY(-2px); box-shadow:0 18px 30px -10px rgba(242,169,59,0.6);}
+
+  /* ---------- HERO CARD STACK ---------- */
+  .card-stack{
+    position:relative;
+    height:460px;
+    perspective:1200px;
+  }
+  .job-card, .match-card{
+    position:absolute;
+    border-radius:var(--radius-lg);
+    transition:transform .25s ease;
+    will-change:transform;
+  }
+  .job-card{
+    top:0; left:6%;
+    width:78%;
+    background:var(--lavender-100);
+    padding:26px 26px 24px;
+    box-shadow:var(--shadow-card);
+  }
+  .job-badge{
+    display:inline-block;
+    background:var(--white);
+    color:var(--violet-700);
+    font-size:11.5px;
+    font-weight:700;
+    padding:6px 12px;
+    border-radius:999px;
+    margin-bottom:16px;
+  }
+  .job-card h3{font-size:21px;font-weight:700;margin-bottom:6px;}
+  .job-card .co{color:var(--gray-600);font-size:14px;margin-bottom:2px;}
+  .job-card .loc{color:var(--gray-600);font-size:14px;margin-bottom:14px;}
+  .job-card .pay{font-weight:700;font-size:15px;margin-bottom:14px;}
+  .job-tags{display:flex;gap:8px;margin-bottom:18px;flex-wrap:wrap;}
+  .job-tag{
+    background:rgba(27,17,48,0.06);
+    font-size:12px;font-weight:600;
+    padding:6px 11px;border-radius:8px;color:var(--ink-900);
+  }
+  .apply-link{
+    color:var(--violet-700);font-weight:700;font-size:14px;
+    display:inline-flex;align-items:center;gap:6px;
+  }
+
+  .match-card{
+    bottom:0; right:0;
+    width:84%;
+    background:var(--white);
+    padding:26px;
+    box-shadow:0 30px 55px -18px rgba(27,17,48,0.4);
+  }
+  .match-badge{
+    display:flex;align-items:center;gap:9px;
+    background:linear-gradient(90deg, #FDECD2, #FBE0C6);
+    padding:10px 14px;
+    border-radius:11px;
+    margin-bottom:18px;
+    position:relative;
+    overflow:hidden;
+  }
+  .match-badge::after{
+    content:"";
+    position:absolute;inset:0;
+    background:linear-gradient(100deg, transparent 30%, rgba(255,255,255,0.65) 45%, transparent 60%);
+    background-size:220% 100%;
+    animation:scan 3.2s ease-in-out infinite;
+  }
+  @keyframes scan{
+    0%{background-position:130% 0;}
+    55%{background-position:-30% 0;}
+    100%{background-position:-30% 0;}
+  }
+  .match-badge svg{width:16px;height:16px;color:var(--amber-600);position:relative;}
+  .match-badge span{font-weight:700;font-size:13.5px;color:#6B4200;position:relative;}
+  .candidate{display:flex;align-items:center;gap:12px;margin-bottom:18px;}
+  .avatar{
+    width:44px;height:44px;border-radius:50%;
+    background:linear-gradient(135deg,var(--violet-500),var(--amber-400));
+    display:flex;align-items:center;justify-content:center;
+    color:var(--white);font-weight:700;font-size:15px;
+  }
+  .candidate h4{font-size:16.5px;font-weight:700;}
+  .skill-row{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:16px;}
+  .skill-tag{
+    font-family:'Space Mono',monospace;
+    font-size:11px;
+    display:flex;align-items:center;gap:5px;
+    background:var(--paper-dim);
+    padding:6px 10px;border-radius:7px;
+    color:var(--ink-900);
+  }
+  .skill-tag svg{width:11px;height:11px;color:var(--violet-500);}
+  .match-note{
+    font-size:13.5px;color:var(--gray-600);line-height:1.55;margin-bottom:18px;
+    padding-top:2px;border-top:1px solid var(--line);padding-top:14px;
+  }
+  .status-label{font-size:12px;font-weight:700;color:var(--gray-600);margin-bottom:8px;text-transform:uppercase;letter-spacing:0.04em;}
+  .status-pill{
+    display:inline-block;
+    background:var(--green-100);color:var(--green-600);
+    font-weight:700;font-size:13px;
+    padding:7px 14px;border-radius:999px;
+  }
+
+  /* ---------- SECTIONS ---------- */
+  section{padding:96px 0;}
+  .section-head{max-width:560px;margin-bottom:56px;}
+  .section-eyebrow{
+    color:var(--violet-700);
+    font-size:12px;font-weight:700;margin-bottom:14px;
+  }
+  .section-head h2{font-size:clamp(30px,4vw,40px);font-weight:700;margin-bottom:14px;}
+  .section-head p{color:var(--gray-600);font-size:16.5px;line-height:1.6;}
+
+  /* how it works */
+  .steps{display:grid;grid-template-columns:repeat(3,1fr);gap:28px;}
+  .step-card{
+    background:var(--white);
+    border:1px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:30px 26px;
+  }
+  .step-num{
+    font-family:'Space Mono',monospace;
+    color:var(--violet-500);
+    font-size:13px;font-weight:700;
+    margin-bottom:20px;
+  }
+  .step-card h3{font-size:20px;font-weight:700;margin-bottom:10px;}
+  .step-card p{color:var(--gray-600);font-size:14.5px;line-height:1.6;}
+
+  /* features */
+  .features-bg{background:var(--violet-900);}
+  .features-bg .section-eyebrow{color:var(--violet-200);}
+  .features-bg .section-head h2{color:var(--white);}
+  .features-bg .section-head p{color:rgba(255,255,255,0.7);}
+  .feat-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:22px;}
+  .feat-card{
+    background:rgba(255,255,255,0.05);
+    border:1px solid rgba(255,255,255,0.12);
+    border-radius:var(--radius-lg);
+    padding:28px;
+    transition:background .18s ease, transform .18s ease;
+  }
+  .feat-card:hover{background:rgba(255,255,255,0.09); transform:translateY(-3px);}
+  .feat-icon{
+    width:42px;height:42px;border-radius:11px;
+    background:linear-gradient(135deg,var(--amber-400),var(--violet-500));
+    display:flex;align-items:center;justify-content:center;margin-bottom:18px;
+  }
+  .feat-icon svg{width:21px;height:21px;color:var(--ink-900);}
+  .feat-card h3{color:var(--white);font-size:18px;font-weight:700;margin-bottom:8px;}
+  .feat-card p{color:rgba(255,255,255,0.68);font-size:14.5px;line-height:1.6;}
+
+  /* proof */
+  .proof-strip{
+    display:flex;align-items:center;justify-content:space-between;
+    flex-wrap:wrap;gap:24px;
+    padding:34px 0;
+    border-top:1px solid var(--line);
+    border-bottom:1px solid var(--line);
+    margin-bottom:70px;
+  }
+  .proof-strip .co-name{
+    font-family:'Sora',sans-serif;font-weight:700;font-size:17px;color:var(--gray-400);
+  }
+  .testimonial{
+    max-width:640px;
+    margin:0 auto;
+    text-align:center;
+  }
+  .testimonial p{font-size:23px;font-family:'Sora',sans-serif;font-weight:600;line-height:1.5;color:var(--ink-900);margin-bottom:20px;}
+  .testimonial .who{color:var(--gray-600);font-size:14.5px;}
+
+  /* pricing */
+  .pricing-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:24px;}
+  .price-card{
+    background:var(--white);
+    border:1.5px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:32px 28px;
+  }
+  .price-card.featured{
+    border-color:var(--violet-700);
+    box-shadow:var(--shadow-card);
+    position:relative;
+  }
+  .price-tag{
+    position:absolute;top:-13px;left:28px;
+    background:var(--violet-700);color:var(--white);
+    font-size:11.5px;font-weight:700;padding:5px 12px;border-radius:999px;
+  }
+  .price-card h3{font-size:19px;font-weight:700;margin-bottom:8px;}
+  .price-amt{font-family:'Sora',sans-serif;font-size:36px;font-weight:700;margin-bottom:4px;}
+  .price-amt span{font-size:14px;font-weight:500;color:var(--gray-600);}
+  .price-card p.desc{color:var(--gray-600);font-size:14px;margin-bottom:22px;}
+  .price-list{list-style:none;padding:0;margin:0 0 26px;}
+  .price-list li{
+    display:flex;align-items:flex-start;gap:9px;
+    font-size:14px;color:var(--ink-900);margin-bottom:11px;line-height:1.5;
+  }
+  .price-list svg{width:16px;height:16px;color:var(--green-600);flex-shrink:0;margin-top:2px;}
+  .price-btn{
+    display:block;text-align:center;width:100%;
+    padding:12px;border-radius:10px;
+    font-weight:700;font-size:14.5px;
+    border:1.5px solid var(--ink-900);
+    color:var(--ink-900);
+  }
+  .price-card.featured .price-btn{background:var(--violet-700);border-color:var(--violet-700);color:var(--white);}
+  .price-btn:hover{opacity:0.85;}
+
+  /* footer */
+  footer{background:var(--ink-900);color:rgba(255,255,255,0.7);padding:70px 0 34px;}
+  .foot-grid{display:grid;grid-template-columns:1.4fr repeat(4,1fr);gap:30px;margin-bottom:50px;}
+  .foot-brand .logo{margin-bottom:14px;}
+  .foot-brand p{font-size:14px;line-height:1.6;color:rgba(255,255,255,0.55);max-width:230px;}
+  .foot-col h4{color:var(--white);font-size:13px;font-weight:700;margin-bottom:16px;letter-spacing:0.03em;}
+  .foot-col ul{list-style:none;padding:0;margin:0;}
+  .foot-col li{margin-bottom:11px;}
+  .foot-col a{font-size:14px;color:rgba(255,255,255,0.6);}
+  .foot-col a:hover{color:var(--white);}
+  .foot-bottom{
+    display:flex;justify-content:space-between;align-items:center;
+    padding-top:26px;border-top:1px solid rgba(255,255,255,0.12);
+    font-size:13px;color:rgba(255,255,255,0.45);flex-wrap:wrap;gap:14px;
+  }
+
+  /* ---------- RESPONSIVE ---------- */
+  @media (max-width:900px){
+    .nav-links, .nav-help, .divider-v, .nav-seeker{display:none;}
+    .hamburger{display:block;}
+    .hero-grid{grid-template-columns:1fr;}
+    .card-stack{height:400px;margin-top:20px;}
+    .steps{grid-template-columns:1fr;}
+    .feat-grid{grid-template-columns:1fr;}
+    .pricing-grid{grid-template-columns:1fr;}
+    .foot-grid{grid-template-columns:1fr 1fr; row-gap:38px;}
+    .foot-brand{grid-column:1 / -1;}
+    .foot-brand p{max-width:360px;}
+    .hero-copy p{max-width:100%;}
+  }
+  @media (max-width:560px){
+    .wrap{padding:0 20px;}
+    nav{padding:20px;}
+    .foot-grid{grid-template-columns:1fr;}
+    .job-card{position:relative;top:auto;left:auto;width:100%;}
+    .match-card{position:relative;bottom:auto;right:auto;width:100%;margin-top:18px;}
+    .card-stack{height:auto;}
+  }
+
+  @media (prefers-reduced-motion: reduce){
+    *{animation:none !important; transition:none !important;}
+  }
+
+  /* ---------- OPEN ROLES / SEARCH ---------- */
+  .search-bar{
+    display:flex;gap:12px;
+    background:var(--white);
+    border:1.5px solid var(--line);
+    border-radius:var(--radius-md);
+    padding:10px;
+    margin-bottom:34px;
+    flex-wrap:wrap;
+  }
+  .search-field{
+    flex:1;min-width:180px;
+    display:flex;align-items:center;gap:10px;
+    padding:8px 12px;
+  }
+  .search-field svg{width:17px;height:17px;color:var(--gray-400);flex-shrink:0;}
+  .search-field input{
+    border:none;outline:none;background:none;
+    font-family:'Inter',sans-serif;font-size:14.5px;color:var(--ink-900);width:100%;
+  }
+  .search-field input::placeholder{color:var(--gray-400);}
+  .search-field + .search-field{border-left:1px solid var(--line);}
+  .search-btn{
+    background:var(--violet-700);color:var(--white);
+    border:none;border-radius:8px;
+    padding:0 24px;font-weight:700;font-size:14.5px;
+    transition:background .16s ease;
+  }
+  .search-btn:hover{background:var(--violet-500);}
+
+  .jobs-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:22px;}
+  .role-card{
+    background:var(--white);
+    border:1.5px solid var(--line);
+    border-radius:var(--radius-lg);
+    padding:24px;
+    box-shadow:var(--shadow-card);
+    display:flex;flex-direction:column;
+  }
+  .role-badge{
+    align-self:flex-start;
+    font-size:11px;font-weight:700;
+    padding:5px 11px;border-radius:999px;
+    margin-bottom:14px;
+  }
+  .role-badge.urgent{background:var(--lavender-100);color:var(--violet-700);}
+  .role-badge.new{background:#FDECD2;color:var(--amber-600);}
+  .role-card h3{font-size:18px;font-weight:700;margin-bottom:6px;}
+  .role-card .co{color:var(--gray-600);font-size:14px;}
+  .role-card .loc{color:var(--gray-600);font-size:14px;margin-bottom:12px;}
+  .role-card .pay{font-weight:700;font-size:14.5px;margin-bottom:14px;}
+  .role-tags{display:flex;gap:7px;flex-wrap:wrap;margin-bottom:18px;}
+  .role-apply{
+    margin-top:auto;
+    background:none;border:1.5px solid var(--violet-700);
+    color:var(--violet-700);font-weight:700;font-size:13.5px;
+    padding:10px;border-radius:9px;
+    transition:background .16s ease, color .16s ease;
+  }
+  .role-apply:hover{background:var(--violet-700);color:var(--white);}
+  .empty-state{
+    grid-column:1/-1;
+    text-align:center;color:var(--gray-600);
+    padding:50px 20px;font-size:15px;
+  }
+
+  /* ---------- MODAL ---------- */
+  .modal-overlay{
+    position:fixed;inset:0;z-index:100;
+    background:rgba(27,17,48,0.55);
+    display:none;align-items:center;justify-content:center;
+    padding:20px;
+  }
+  .modal-overlay.open{display:flex;}
+  .modal{
+    background:var(--white);
+    border-radius:var(--radius-lg);
+    width:100%;max-width:440px;
+    max-height:88vh;overflow-y:auto;
+    padding:32px;
+    position:relative;
+    box-shadow:0 40px 80px -20px rgba(27,17,48,0.5);
+  }
+  .modal-close{
+    position:absolute;top:18px;right:18px;
+    width:32px;height:32px;border-radius:50%;
+    border:none;background:var(--paper-dim);
+    display:flex;align-items:center;justify-content:center;
+    color:var(--ink-900);
+  }
+  .modal-close:hover{background:var(--line);}
+  .modal h3{font-size:22px;font-weight:700;margin-bottom:6px;}
+  .modal .modal-sub{color:var(--gray-600);font-size:14px;margin-bottom:24px;}
+  .field-group{margin-bottom:16px;}
+  .field-group label{
+    display:block;font-size:13px;font-weight:600;margin-bottom:7px;color:var(--ink-900);
+  }
+  .field-group input, .field-group select, .field-group textarea{
+    width:100%;
+    border:1.5px solid var(--line);
+    border-radius:9px;
+    padding:11px 13px;
+    font-family:'Inter',sans-serif;
+    font-size:14.5px;
+    color:var(--ink-900);
+    background:var(--paper);
+  }
+  .field-group input:focus, .field-group select:focus, .field-group textarea:focus{
+    outline:none;border-color:var(--violet-500);
+  }
+  .field-group textarea{resize:vertical;min-height:80px;}
+  .field-row{display:flex;gap:12px;}
+  .field-row .field-group{flex:1;}
+  .modal-submit{
+    width:100%;
+    background:var(--violet-700);color:var(--white);
+    border:none;border-radius:10px;
+    padding:13px;font-weight:700;font-size:15px;
+    margin-top:6px;
+    transition:background .16s ease;
+  }
+  .modal-submit:hover{background:var(--violet-500);}
+  .modal-note{font-size:12.5px;color:var(--gray-400);margin-top:14px;text-align:center;}
+  .paypal-btns{margin-top:16px;min-height:44px;}
+  .checkout-summary{
+    background:var(--paper-dim);
+    border-radius:12px;
+    padding:16px 18px;
+    display:flex;justify-content:space-between;align-items:center;
+    margin-bottom:20px;
+  }
+  .checkout-summary .plan-name{font-weight:700;font-size:15px;}
+  .checkout-summary .plan-price{font-family:'Sora',sans-serif;font-weight:700;font-size:19px;}
+
+  /* ---------- TOAST ---------- */
+  .toast-stack{
+    position:fixed;bottom:24px;right:24px;z-index:200;
+    display:flex;flex-direction:column;gap:10px;
+  }
+  .toast{
+    background:var(--ink-900);color:var(--white);
+    padding:14px 20px;border-radius:11px;
+    font-size:14px;font-weight:500;
+    box-shadow:0 14px 30px -10px rgba(0,0,0,0.4);
+    display:flex;align-items:center;gap:10px;
+    animation:toastIn .22s ease;
+    max-width:300px;
+  }
+  .toast svg{width:17px;height:17px;color:var(--green-600);flex-shrink:0;}
+  @keyframes toastIn{from{opacity:0;transform:translateY(10px);}to{opacity:1;transform:translateY(0);}}
+
+  /* ---------- NAV USER STATE ---------- */
+  .nav-user{display:flex;align-items:center;gap:12px;}
+  .nav-user .avatar{width:32px;height:32px;font-size:12.5px;}
+  .nav-user .u-name{color:var(--white);font-size:14.5px;font-weight:600;}
+  .nav-user .signout{
+    color:rgba(255,255,255,0.7);font-size:13.5px;font-weight:500;
+    background:none;border:none;
+  }
+  .nav-user .signout:hover{color:var(--white);}
+
+  /* ---------- PRICING SELECTED STATE ---------- */
+  .price-card.selected{border-color:var(--green-600);}
+  .price-card.selected .price-btn{background:var(--green-600);border-color:var(--green-600);color:var(--white);}
+
+  @media (max-width:900px){
+    .jobs-grid{grid-template-columns:1fr;}
+    .search-field + .search-field{border-left:none;border-top:1px solid var(--line);}
+    .search-bar{flex-direction:column;}
+  }
+
+  /* ---------- SUBPAGES ---------- */
+  .subpage-topbar{background:var(--paper);border-bottom:1px solid var(--line);padding:22px 0;}
+  .subpage-topbar-inner{display:flex;justify-content:space-between;align-items:center;}
+  .subpage-topbar .logo{font-size:18px;}
+  .subpage-back{font-size:14px;font-weight:600;color:var(--violet-700);}
+  .subpage-back:hover{color:var(--violet-500);}
+  .subpage-body{max-width:700px;margin:0 auto;padding:64px 32px 110px;}
+  .subpage-h1{font-family:'Sora',sans-serif;font-weight:700;font-size:clamp(30px,4vw,40px);margin-bottom:16px;}
+  .subpage-lede{color:var(--gray-600);font-size:17px;line-height:1.65;margin-bottom:36px;}
+  .subpage-disclaimer{
+    background:var(--lavender-100);border-radius:12px;
+    padding:16px 18px;font-size:13.5px;color:var(--gray-600);line-height:1.6;
+    margin-bottom:34px;
+  }
+  .subpage-section h2{font-family:'Sora',sans-serif;font-size:19px;font-weight:700;margin:32px 0 12px;}
+  .subpage-section p{color:var(--ink-900);font-size:15.5px;line-height:1.75;margin-bottom:14px;}
+  .subpage-section ul{margin:0 0 14px;padding-left:20px;}
+  .subpage-section li{color:var(--ink-900);font-size:15.5px;line-height:1.7;margin-bottom:8px;}
+
+  .faq-item{border-bottom:1px solid var(--line);padding:18px 0;}
+  .faq-item summary{
+    font-weight:700;font-size:16px;cursor:pointer;list-style:none;
+    display:flex;justify-content:space-between;align-items:center;
+  }
+  .faq-item summary::-webkit-details-marker{display:none;}
+  .faq-item summary::after{content:'+';font-size:20px;color:var(--violet-700);font-weight:400;}
+  .faq-item[open] summary::after{content:'\2013';}
+  .faq-item p{margin-top:12px;color:var(--gray-600);font-size:14.5px;line-height:1.7;}
+
+  .salary-row{display:flex;justify-content:space-between;align-items:center;padding:15px 0;border-bottom:1px solid var(--line);font-size:15.5px;}
+  .salary-row span:last-child{font-weight:700;font-family:'Sora',sans-serif;}
+
+  .subpage-role{
+    background:var(--white);border:1.5px solid var(--line);border-radius:var(--radius-lg);
+    padding:22px 24px;margin-bottom:16px;
+    display:flex;justify-content:space-between;align-items:center;gap:20px;flex-wrap:wrap;
+  }
+  .subpage-role h3{font-size:17px;font-weight:700;margin-bottom:4px;}
+  .subpage-role p{color:var(--gray-600);font-size:14px;margin:0;}
+
+  .contact-info{margin-bottom:36px;}
+  .contact-info .row{display:flex;gap:12px;align-items:flex-start;margin-bottom:14px;}
+  .contact-info svg{width:19px;height:19px;color:var(--violet-700);flex-shrink:0;margin-top:2px;}
+  .contact-info .row span{font-size:15px;color:var(--ink-900);line-height:1.5;}
+</style>
+</head>
+<body>
+
+<main id="mainContent">
+<div class="hero-shell">
+  <nav>
+    <a href="#" class="logo">
+      <span class="logo-mark">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M4 6h10M4 18h7" stroke="#1B1130" stroke-width="2.4" stroke-linecap="round"/></svg>
+      </span>
+      Roster
+    </a>
+
+    <ul class="nav-links">
+      <li class="nav-drop" id="dropFeatures">
+        <button onclick="toggleDrop('dropFeatures')">Features
+          <svg viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="#features">AI matching</a>
+          <a href="#features">Applicant tracking</a>
+          <a href="#features">Team messaging</a>
+        </div>
+      </li>
+      <li class="nav-drop" id="dropResources">
+        <button onclick="toggleDrop('dropResources')">Resources
+          <svg viewBox="0 0 12 8" fill="none"><path d="M1 1.5L6 6.5L11 1.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+        </button>
+        <div class="nav-drop-menu">
+          <a href="#" onclick="event.preventDefault(); showSubpage('hiring-guide')">Hiring guide</a>
+          <a href="#" onclick="event.preventDefault(); showSubpage('salary-data')">Salary data</a>
+          <a href="#" onclick="event.preventDefault(); showSubpage('help-center')">Help center</a>
+        </div>
+      </li>
+      <li><a href="#pricing">Pricing</a></li>
+    </ul>
+
+    <div class="nav-right" id="navRight">
+      <a href="#" class="nav-help">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 9.2a2.5 2.5 0 114.3 1.7c-.7.7-1.3 1-1.3 2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16.4" r="0.9" fill="currentColor"/></svg>
+        Help
+      </a>
+      <button class="btn btn-outline" id="signInBtn" onclick="openModal('signin')">Sign in</button>
+      <button class="btn btn-white" onclick="openModal('post')">Post a job</button>
+      <div class="divider-v"></div>
+      <a href="#" class="nav-seeker">For jobseekers</a>
+    </div>
+
+    <button class="hamburger" aria-label="Menu">
+      <span></span><span></span><span></span>
+    </button>
+  </nav>
+
+  <div class="wrap hero-grid">
+    <div class="hero-copy">
+      <div class="eyebrow mono">Post a job on Roster</div>
+      <h1>Hire faster.</h1>
+      <p>Post a job and start attracting matched candidates today.</p>
+      <button class="btn-cta btn" onclick="openModal('post')">Post a job</button>
+    </div>
+
+    <div class="card-stack" id="cardStack">
+      <div class="job-card">
+        <span class="job-badge">Urgently hiring</span>
+        <h3>Senior Support Engineer</h3>
+        <div class="co">Lumen Logistics</div>
+        <div class="loc">Austin, TX</div>
+        <div class="pay">$65,000 – $85,000 a year</div>
+        <div class="job-tags">
+          <span class="job-tag">Full-time</span>
+          <span class="job-tag">Remote</span>
+        </div>
+        <button class="apply-link" style="background:none;border:none;padding:0;cursor:pointer;" onclick="openApply('Senior Support Engineer','Lumen Logistics')">Easily apply →</button>
+      </div>
+
+      <div class="match-card">
+        <div class="match-badge">
+          <svg viewBox="0 0 24 24" fill="currentColor"><path d="M12 2l1.8 5.6L19 9l-5.2 1.4L12 16l-1.8-5.6L5 9l5.2-1.4L12 2z"/></svg>
+          <span>Matched candidate application</span>
+        </div>
+        <div class="candidate">
+          <span class="avatar">JB</span>
+          <h4>Jordan Blake</h4>
+        </div>
+        <div class="skill-row">
+          <span class="skill-tag"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Support: 3 years</span>
+          <span class="skill-tag"><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg>Zendesk</span>
+          <span class="skill-tag">SQL</span>
+          <span class="skill-tag">Night shifts</span>
+          <span class="skill-tag">+8 more</span>
+        </div>
+        <p class="match-note">This match possesses a strong background in high-volume, technical support environments.</p>
+        <div class="status-label">Phone interview</div>
+        <span class="status-pill">Confirmed</span>
+      </div>
+    </div>
+  </div>
+</div>
+
+<section id="roles">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow mono">Open roles</div>
+      <h2>Search live openings</h2>
+      <p>Every job posted through Roster shows up here immediately — including the one you post today.</p>
+    </div>
+
+    <div class="search-bar">
+      <div class="search-field">
+        <svg viewBox="0 0 24 24" fill="none"><circle cx="11" cy="11" r="7" stroke="currentColor" stroke-width="1.8"/><path d="M21 21l-4.3-4.3" stroke="currentColor" stroke-width="1.8" stroke-linecap="round"/></svg>
+        <input id="searchKeyword" type="text" placeholder="Job title or company" oninput="handleSearch()">
+      </div>
+      <div class="search-field">
+        <svg viewBox="0 0 24 24" fill="none"><path d="M12 22s7-6.2 7-12a7 7 0 10-14 0c0 5.8 7 12 7 12z" stroke="currentColor" stroke-width="1.8"/><circle cx="12" cy="10" r="2.4" stroke="currentColor" stroke-width="1.8"/></svg>
+        <input id="searchLocation" type="text" placeholder="City or 'Remote'" oninput="handleSearch()">
+      </div>
+      <button class="search-btn" onclick="handleSearch()">Search jobs</button>
+    </div>
+
+    <div class="jobs-grid" id="jobsGrid"></div>
+  </div>
+</section>
+
+<section id="how">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow mono">The process</div>
+      <h2>From post to hire, in three steps</h2>
+      <p>No lengthy setup. Roster gets your opening in front of qualified candidates the same day you post it.</p>
+    </div>
+    <div class="steps">
+      <div class="step-card">
+        <div class="step-num">01 — POST</div>
+        <h3>Write your listing</h3>
+        <p>Add the role, pay range, and requirements. Roster formats it for search and mobile in seconds.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">02 — MATCH</div>
+        <h3>Review matched candidates</h3>
+        <p>Applications are scored against your requirements, so the strongest fits reach the top of your queue.</p>
+      </div>
+      <div class="step-card">
+        <div class="step-num">03 — HIRE</div>
+        <h3>Message and schedule</h3>
+        <p>Message candidates, confirm interviews, and track every stage from one shared inbox.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section class="features-bg" id="features">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow mono">What's included</div>
+      <h2>Built for hiring teams, not just job posts</h2>
+      <p>Everything you need to go from opening to offer letter, without switching tools.</p>
+    </div>
+    <div class="feat-grid">
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M12 2l1.8 5.6L19 9l-5.2 1.4L12 16l-1.8-5.6L5 9l5.2-1.4L12 2z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h3>AI matching</h3>
+        <p>Candidates are ranked against the skills and experience your listing actually asks for.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M5 12l5 5 9-10" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"/></svg></div>
+        <h3>Easy apply</h3>
+        <p>Candidates apply in one tap using their Roster profile — no dropped-off applications.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><rect x="4" y="5" width="16" height="14" rx="2" stroke="currentColor" stroke-width="1.6"/><path d="M4 10h16" stroke="currentColor" stroke-width="1.6"/></svg></div>
+        <h3>Applicant tracking</h3>
+        <p>See every candidate's stage at a glance, from new application to signed offer.</p>
+      </div>
+      <div class="feat-card">
+        <div class="feat-icon"><svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v10H8l-4 4V5z" stroke="currentColor" stroke-width="1.6" stroke-linejoin="round"/></svg></div>
+        <h3>Team messaging</h3>
+        <p>Loop in coworkers on any application and keep the whole hiring thread in one place.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<section>
+  <div class="wrap">
+    <div class="proof-strip">
+      <span class="co-name">Lumen Logistics</span>
+      <span class="co-name">Wavewood Health</span>
+      <span class="co-name">Farro & Finch</span>
+      <span class="co-name">Basecamp Freight</span>
+      <span class="co-name">Northgate Retail</span>
+    </div>
+    <div class="testimonial">
+      <p>"We filled a role that had been open for two months in nine days. The matching actually understood what we needed."</p>
+      <div class="who">Priya Shah, Head of People at Basecamp Freight</div>
+    </div>
+  </div>
+</section>
+
+<section id="pricing">
+  <div class="wrap">
+    <div class="section-head">
+      <div class="section-eyebrow mono">Pricing</div>
+      <h2>Pay for reach, not per résumé</h2>
+      <p>Start free. Upgrade when you need your listing in front of more candidates, faster.</p>
+    </div>
+    <div class="pricing-grid">
+      <div class="price-card" id="planStarter">
+        <h3>Starter</h3>
+        <div class="price-amt">$0</div>
+        <p class="desc">For occasional hiring</p>
+        <ul class="price-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>1 active job post</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Basic candidate matching</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Shared team inbox</li>
+        </ul>
+        <button class="price-btn" onclick="selectPlan('planStarter','Starter')">Get started</button>
+      </div>
+      <div class="price-card featured" id="planGrowth">
+        <span class="price-tag">Most popular</span>
+        <h3>Growth</h3>
+        <div class="price-amt">$125<span>/mo</span></div>
+        <p class="desc">For steady hiring</p>
+        <ul class="price-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>10 active job posts</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Priority AI matching</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Applicant tracking board</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Interview scheduling</li>
+        </ul>
+        <button class="price-btn" onclick="selectPlan('planGrowth','Growth')">Start free trial</button>
+      </div>
+      <div class="price-card" id="planScale">
+        <h3>Scale</h3>
+        <div class="price-amt">Custom</div>
+        <p class="desc">For high-volume hiring teams</p>
+        <ul class="price-list">
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Unlimited job posts</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>Dedicated account manager</li>
+          <li><svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>API access</li>
+        </ul>
+        <button class="price-btn" onclick="selectPlan('planScale','Scale')">Talk to sales</button>
+      </div>
+    </div>
+  </div>
+</section>
+</main>
+
+<div id="subpageView" style="display:none;">
+  <div class="subpage-topbar">
+    <div class="wrap subpage-topbar-inner">
+      <a href="#" class="logo" style="color:var(--ink-900)" onclick="event.preventDefault(); hideSubpage();">
+        <span class="logo-mark">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M4 6h10M4 18h7" stroke="#1B1130" stroke-width="2.4" stroke-linecap="round"/></svg>
+        </span>
+        Roster
+      </a>
+      <a href="#" class="subpage-back" onclick="event.preventDefault(); hideSubpage();">&larr; Back to Roster</a>
+    </div>
+  </div>
+  <div class="subpage-body" id="subpageContent"></div>
+</div>
+
+<footer>
+  <div class="wrap">
+    <div class="foot-grid">
+      <div class="foot-brand">
+        <a href="#" class="logo">
+          <span class="logo-mark">
+            <svg viewBox="0 0 24 24" fill="none"><path d="M4 12h16M4 6h10M4 18h7" stroke="#1B1130" stroke-width="2.4" stroke-linecap="round"/></svg>
+          </span>
+          Roster
+        </a>
+        <p>Hiring software that gets your listing in front of the right candidates, faster.</p>
+      </div>
+      <div class="foot-col">
+        <h4>Product</h4>
+        <ul>
+          <li><a href="#" onclick="event.preventDefault(); openModal('post')">Post a job</a></li>
+          <li><a href="#features">Features</a></li>
+          <li><a href="#pricing">Pricing</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Resources</h4>
+        <ul>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('hiring-guide')">Hiring guide</a></li>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('salary-data')">Salary data</a></li>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('help-center')">Help center</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Company</h4>
+        <ul>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('about')">About</a></li>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('careers')">Careers</a></li>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('contact')">Contact</a></li>
+        </ul>
+      </div>
+      <div class="foot-col">
+        <h4>Legal</h4>
+        <ul>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('privacy')">Privacy</a></li>
+          <li><a href="#" onclick="event.preventDefault(); showSubpage('terms')">Terms</a></li>
+        </ul>
+      </div>
+    </div>
+    <div class="foot-bottom">
+      <span>© 2026 Roster. All rights reserved.</span>
+      <span>Made for hiring teams.</span>
+    </div>
+  </div>
+</footer>
+
+<div class="modal-overlay" id="modalOverlay" onclick="if(event.target===this)closeModal()">
+  <div class="modal" id="modalBody" role="dialog" aria-modal="true"></div>
+</div>
+
+<div class="toast-stack" id="toastStack"></div>
+
+<script>
+  function toggleDrop(id){
+    document.querySelectorAll('.nav-drop').forEach(function(el){
+      if(el.id !== id) el.classList.remove('open');
+    });
+    document.getElementById(id).classList.toggle('open');
+  }
+  document.addEventListener('click', function(e){
+    if(!e.target.closest('.nav-drop')){
+      document.querySelectorAll('.nav-drop').forEach(function(el){el.classList.remove('open');});
+    }
+  });
+
+  // Mobile menu: simple toggle of nav-links visibility as an overlay
+  var hamburger = document.querySelector('.hamburger');
+  var mobileOpen = false;
+  hamburger.addEventListener('click', function(){
+    mobileOpen = !mobileOpen;
+    var links = document.querySelector('.nav-links');
+    var right = document.querySelector('.nav-right');
+    if(mobileOpen){
+      links.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:70px;left:20px;right:20px;background:#2C1866;padding:20px;border-radius:14px;gap:16px;z-index:40;';
+      right.style.cssText = 'display:flex;flex-direction:column;position:absolute;top:' + (70 + links.offsetHeight + 12) + 'px;left:20px;right:20px;background:#2C1866;padding:20px;border-radius:14px;gap:14px;z-index:40;align-items:flex-start;';
+    } else {
+      links.removeAttribute('style');
+      right.removeAttribute('style');
+    }
+  });
+
+  // Subtle mouse-parallax tilt on the hero card stack (signature interaction)
+  var stack = document.getElementById('cardStack');
+  var jobCard = document.querySelector('.job-card');
+  var matchCard = document.querySelector('.match-card');
+  var reduceMotion = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
+  if(stack && !reduceMotion && window.innerWidth > 900){
+    stack.addEventListener('mousemove', function(e){
+      var rect = stack.getBoundingClientRect();
+      var x = (e.clientX - rect.left) / rect.width - 0.5;
+      var y = (e.clientY - rect.top) / rect.height - 0.5;
+      jobCard.style.transform = 'rotate(-2deg) translate(' + (x * -8) + 'px,' + (y * -6) + 'px)';
+      matchCard.style.transform = 'rotate(1.5deg) translate(' + (x * 12) + 'px,' + (y * 9) + 'px)';
+    });
+    stack.addEventListener('mouseleave', function(){
+      jobCard.style.transform = 'rotate(-2deg)';
+      matchCard.style.transform = 'rotate(1.5deg)';
+    });
+    jobCard.style.transform = 'rotate(-2deg)';
+    matchCard.style.transform = 'rotate(1.5deg)';
+  }
+
+  /* =========================================================
+     APPLICATION STATE  (in-memory only — resets on page reload,
+     no browser storage is used)
+  ========================================================== */
+  var state = {
+    loggedIn: false,
+    userName: '',
+    jobs: [
+      {id:1, title:'Senior Support Engineer', company:'Lumen Logistics', location:'Austin, TX', pay:'$65,000 – $85,000 a year', tags:['Full-time','Remote'], badge:'Urgently hiring'},
+      {id:2, title:'Warehouse Team Lead', company:'Basecamp Freight', location:'Columbus, OH', pay:'$52,000 – $61,000 a year', tags:['Full-time','Night shift'], badge:null},
+      {id:3, title:'Product Designer', company:'Farro & Finch', location:'Remote', pay:'$90,000 – $115,000 a year', tags:['Full-time','Remote'], badge:null},
+      {id:4, title:'Registered Nurse', company:'Wavewood Health', location:'Austin, TX', pay:'$68,000 – $92,000 a year', tags:['Full-time','Night shift'], badge:'Urgently hiring'},
+      {id:5, title:'Delivery Driver', company:'Northgate Retail', location:'Columbus, OH', pay:'$41,000 – $52,000 a year', tags:['Full-time','Part-time'], badge:null},
+      {id:6, title:'Administrative Assistant', company:'Farro & Finch', location:'New York, NY', pay:'$38,000 – $48,000 a year', tags:['Full-time'], badge:null},
+      {id:7, title:'Marketing Coordinator', company:'Basecamp Freight', location:'Remote', pay:'$55,000 – $68,000 a year', tags:['Full-time','Remote'], badge:null},
+      {id:8, title:'Line Cook', company:'Wavewood Health', location:'Austin, TX', pay:'$18 – $22 an hour', tags:['Full-time','Night shift'], badge:null},
+      {id:9, title:'Data Analyst', company:'Lumen Logistics', location:'Remote', pay:'$75,000 – $95,000 a year', tags:['Full-time','Remote'], badge:'Urgently hiring'}
+    ],
+    nextId: 10,
+    selectedPlan: null
+  };
+
+  function esc(str){
+    var d = document.createElement('div');
+    d.textContent = str;
+    return d.innerHTML;
+  }
+
+  /* ---------- JOB BOARD / SEARCH ---------- */
+  function renderJobs(){
+    var kw = (document.getElementById('searchKeyword').value || '').toLowerCase().trim();
+    var loc = (document.getElementById('searchLocation').value || '').toLowerCase().trim();
+    var grid = document.getElementById('jobsGrid');
+    var results = state.jobs.filter(function(j){
+      var matchesKw = !kw || (j.title.toLowerCase().indexOf(kw) > -1 || j.company.toLowerCase().indexOf(kw) > -1);
+      var matchesLoc = !loc || j.location.toLowerCase().indexOf(loc) > -1;
+      return matchesKw && matchesLoc;
+    });
+
+    if(results.length === 0){
+      grid.innerHTML = '<div class="empty-state">No roles match your search. Try a different title, company, or location.</div>';
+      return;
+    }
+
+    grid.innerHTML = results.map(function(j){
+      var badgeHtml = '';
+      if(j.badge === 'Urgently hiring'){ badgeHtml = '<span class="role-badge urgent">Urgently hiring</span>'; }
+      else if(j.badge === 'Just posted'){ badgeHtml = '<span class="role-badge new">Just posted</span>'; }
+      var tagsHtml = j.tags.map(function(t){ return '<span class="job-tag">' + esc(t) + '</span>'; }).join('');
+      return '' +
+        '<div class="role-card">' +
+          badgeHtml +
+          '<h3>' + esc(j.title) + '</h3>' +
+          '<div class="co">' + esc(j.company) + '</div>' +
+          '<div class="loc">' + esc(j.location) + '</div>' +
+          '<div class="pay">' + esc(j.pay) + '</div>' +
+          '<div class="role-tags">' + tagsHtml + '</div>' +
+          '<button class="role-apply" onclick="openApply(' + "'" + esc(j.title).replace(/'/g,"\\'") + "','" + esc(j.company).replace(/'/g,"\\'") + "'" + ')">Easily apply</button>' +
+        '</div>';
+    }).join('');
+  }
+
+  function handleSearch(){ renderJobs(); }
+
+  /* ---------- MODALS ---------- */
+  function openModal(type, payload){
+    var overlay = document.getElementById('modalOverlay');
+    var body = document.getElementById('modalBody');
+
+    if(type === 'post'){
+      body.innerHTML = '' +
+        '<button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>' +
+        '<h3>Post a job</h3>' +
+        '<p class="modal-sub">Your listing appears in Open roles as soon as you publish it.</p>' +
+        '<form onsubmit="submitPostJob(event)">' +
+          '<div class="field-group"><label for="pjTitle">Job title</label><input id="pjTitle" type="text" placeholder="e.g. Operations Coordinator" required></div>' +
+          '<div class="field-row">' +
+            '<div class="field-group"><label for="pjCompany">Company</label><input id="pjCompany" type="text" placeholder="Your company" required></div>' +
+            '<div class="field-group"><label for="pjLocation">Location</label><input id="pjLocation" type="text" placeholder="City or Remote" required></div>' +
+          '</div>' +
+          '<div class="field-row">' +
+            '<div class="field-group"><label for="pjPay">Salary range</label><input id="pjPay" type="text" placeholder="$60,000 - $80,000 a year"></div>' +
+            '<div class="field-group"><label for="pjType">Job type</label>' +
+              '<select id="pjType"><option>Full-time</option><option>Part-time</option><option>Contract</option><option>Remote</option></select>' +
+            '</div>' +
+          '</div>' +
+          '<div class="field-group"><label for="pjDesc">Description</label><textarea id="pjDesc" placeholder="What will this person do day to day?"></textarea></div>' +
+          '<button type="submit" class="modal-submit">Publish job</button>' +
+        '</form>';
+    }
+
+    else if(type === 'apply'){
+      body.innerHTML = '' +
+        '<button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>' +
+        '<h3>Apply now</h3>' +
+        '<p class="modal-sub">' + esc(payload.title) + ' at ' + esc(payload.company) + '</p>' +
+        '<form onsubmit="submitApply(event, ' + "'" + esc(payload.title).replace(/'/g,"\\'") + "'," + "'" + esc(payload.company).replace(/'/g,"\\'") + "'" + ')">' +
+          '<div class="field-group"><label for="apName">Full name</label><input id="apName" type="text" required></div>' +
+          '<div class="field-group"><label for="apEmail">Email</label><input id="apEmail" type="email" required></div>' +
+          '<div class="field-group"><label for="apNote">Note to the hiring team (optional)</label><textarea id="apNote" placeholder="Anything you would like them to know"></textarea></div>' +
+          '<button type="submit" class="modal-submit">Send application</button>' +
+        '</form>';
+    }
+
+    else if(type === 'signin'){
+      body.innerHTML = '' +
+        '<button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>' +
+        '<h3>Sign in</h3>' +
+        '<p class="modal-sub">Access your job posts and candidate matches.</p>' +
+        '<form onsubmit="submitSignIn(event)">' +
+          '<div class="field-group"><label for="siEmail">Email</label><input id="siEmail" type="email" required></div>' +
+          '<div class="field-group"><label for="siPass">Password</label><input id="siPass" type="password" required></div>' +
+          '<button type="submit" class="modal-submit">Sign in</button>' +
+        '</form>' +
+        '<p class="modal-note">This is a demo — any email and password will sign you in.</p>';
+    }
+
+    else if(type === 'checkout'){
+      body.innerHTML = '' +
+        '<button class="modal-close" onclick="closeModal()" aria-label="Close">&times;</button>' +
+        '<h3>Checkout</h3>' +
+        '<p class="modal-sub">Pay securely with PayPal to activate this plan.</p>' +
+        '<div class="checkout-summary">' +
+          '<span class="plan-name">' + esc(payload.planName) + ' plan</span>' +
+          '<span class="plan-price">$' + payload.amount.toFixed(2) + '/mo</span>' +
+        '</div>' +
+        '<div id="paypal-button-container" class="paypal-btns"></div>' +
+        '<p class="modal-note">Payments are processed by PayPal. Roster never sees your card details.</p>';
+      renderPayPalButtons(payload.amount, payload.planName);
+    }
+
+    overlay.classList.add('open');
+    document.addEventListener('keydown', escCloseModal);
+    var firstInput = body.querySelector('input, textarea, select');
+    if(firstInput) setTimeout(function(){ firstInput.focus(); }, 50);
+  }
+
+  function openApply(title, company){
+    openModal('apply', {title: title, company: company});
+  }
+
+  function closeModal(){
+    document.getElementById('modalOverlay').classList.remove('open');
+    document.removeEventListener('keydown', escCloseModal);
+  }
+
+  function escCloseModal(e){
+    if(e.key === 'Escape') closeModal();
+  }
+
+  /* ---------- FORM SUBMISSIONS ---------- */
+  function submitPostJob(e){
+    e.preventDefault();
+    var title = document.getElementById('pjTitle').value.trim();
+    var company = document.getElementById('pjCompany').value.trim();
+    var location = document.getElementById('pjLocation').value.trim();
+    var pay = document.getElementById('pjPay').value.trim() || 'Salary not specified';
+    var type = document.getElementById('pjType').value;
+
+    state.jobs.unshift({
+      id: state.nextId++,
+      title: title, company: company, location: location, pay: pay,
+      tags: [type], badge: 'Just posted'
+    });
+
+    closeModal();
+    renderJobs();
+    showToast('Your job is live in Open roles.');
+    document.getElementById('roles').scrollIntoView({behavior: reduceMotion ? 'auto' : 'smooth', block: 'start'});
+  }
+
+  function submitApply(e, title, company){
+    e.preventDefault();
+    closeModal();
+    showToast('Application sent to ' + company + '.');
+  }
+
+  function submitSignIn(e){
+    e.preventDefault();
+    var email = document.getElementById('siEmail').value.trim();
+    var name = email.split('@')[0] || 'there';
+    name = name.charAt(0).toUpperCase() + name.slice(1);
+    state.loggedIn = true;
+    state.userName = name;
+    renderNavAuth();
+    closeModal();
+    showToast('Signed in as ' + name + '.');
+  }
+
+  function signOut(){
+    state.loggedIn = false;
+    state.userName = '';
+    renderNavAuth();
+    showToast('Signed out.');
+  }
+
+  function renderNavAuth(){
+    var navRight = document.getElementById('navRight');
+    if(state.loggedIn){
+      var initials = state.userName.slice(0,2).toUpperCase();
+      navRight.innerHTML = '' +
+        '<a href="#" class="nav-help">' +
+          '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 9.2a2.5 2.5 0 114.3 1.7c-.7.7-1.3 1-1.3 2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16.4" r="0.9" fill="currentColor"/></svg>' +
+          'Help' +
+        '</a>' +
+        '<button class="btn btn-white" onclick="openModal(' + "'post'" + ')">Post a job</button>' +
+        '<div class="divider-v"></div>' +
+        '<div class="nav-user">' +
+          '<span class="avatar">' + esc(initials) + '</span>' +
+          '<span class="u-name">' + esc(state.userName) + '</span>' +
+          '<button class="signout" onclick="signOut()">Sign out</button>' +
+        '</div>';
+    } else {
+      navRight.innerHTML = '' +
+        '<a href="#" class="nav-help">' +
+          '<svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6"/><path d="M9.5 9.2a2.5 2.5 0 114.3 1.7c-.7.7-1.3 1-1.3 2.1" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/><circle cx="12" cy="16.4" r="0.9" fill="currentColor"/></svg>' +
+          'Help' +
+        '</a>' +
+        '<button class="btn btn-outline" onclick="openModal(' + "'signin'" + ')">Sign in</button>' +
+        '<button class="btn btn-white" onclick="openModal(' + "'post'" + ')">Post a job</button>' +
+        '<div class="divider-v"></div>' +
+        '<a href="#" class="nav-seeker">For jobseekers</a>';
+    }
+  }
+
+  /* ---------- PRICING ---------- */
+  function selectPlan(cardId, planName){
+    ['planStarter','planGrowth','planScale'].forEach(function(id){
+      var card = document.getElementById(id);
+      card.classList.remove('selected');
+      var btn = card.querySelector('.price-btn');
+      if(id === 'planStarter') btn.textContent = 'Get started';
+      if(id === 'planGrowth') btn.textContent = 'Start free trial';
+      if(id === 'planScale') btn.textContent = 'Talk to sales';
+    });
+
+    if(planName === 'Growth'){
+      openModal('checkout', {planName: planName, amount: 125});
+      return;
+    }
+    if(planName === 'Scale'){
+      showToast('Our team will reach out to set up Scale pricing.');
+      return;
+    }
+
+    var chosen = document.getElementById(cardId);
+    chosen.classList.add('selected');
+    chosen.querySelector('.price-btn').textContent = 'Selected';
+    state.selectedPlan = planName;
+    showToast(planName + ' plan selected.');
+  }
+
+  function renderPayPalButtons(amount, planName){
+    var container = document.getElementById('paypal-button-container');
+    if(typeof paypal === 'undefined'){
+      container.innerHTML = '<p class="modal-note">PayPal did not load. Check your connection, or replace the sandbox client ID in the code with your own live PayPal Client ID.</p>';
+      return;
+    }
+    paypal.Buttons({
+      style: {shape: 'rect', color: 'gold', layout: 'vertical', label: 'paypal'},
+      createOrder: function(data, actions){
+        return actions.order.create({
+          purchase_units: [{
+            amount: {value: amount.toFixed(2)},
+            description: planName + ' plan on Roster'
+          }]
+        });
+      },
+      onApprove: function(data, actions){
+        return actions.order.capture().then(function(details){
+          var card = document.getElementById('planGrowth');
+          card.classList.add('selected');
+          card.querySelector('.price-btn').textContent = 'Selected';
+          state.selectedPlan = planName;
+          closeModal();
+          showToast('Payment received. Welcome to ' + planName + '.');
+        });
+      },
+      onCancel: function(){
+        showToast('Checkout was cancelled.');
+      },
+      onError: function(err){
+        showToast('The payment could not be completed. Please try again.');
+        console.error(err);
+      }
+    }).render('#paypal-button-container');
+  }
+
+  /* ---------- MISC ---------- */
+  function notReady(e, label){
+    e.preventDefault();
+    document.querySelectorAll('.nav-drop').forEach(function(el){el.classList.remove('open');});
+    showToast(label + ' — coming soon.');
+  }
+
+  function showToast(message){
+    var stackEl = document.getElementById('toastStack');
+    var toast = document.createElement('div');
+    toast.className = 'toast';
+    toast.innerHTML = '<svg viewBox="0 0 24 24" fill="none"><path d="M4 12l5 5L20 6" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/></svg><span></span>';
+    toast.querySelector('span').textContent = message;
+    stackEl.appendChild(toast);
+    setTimeout(function(){
+      toast.style.transition = 'opacity .3s ease, transform .3s ease';
+      toast.style.opacity = '0';
+      toast.style.transform = 'translateY(8px)';
+      setTimeout(function(){ toast.remove(); }, 300);
+    }, 3200);
+  }
+
+  /* ---------- SUBPAGES ---------- */
+  var subpageTemplates = {
+
+    'hiring-guide': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Resources</div>
+        <h1 class="subpage-h1">How to write a job post that gets applicants</h1>
+        <p class="subpage-lede">Five habits from listings that fill fast on Roster.</p>
+
+        <h2>Lead with what the person will actually do</h2>
+        <p>Skip the mission-statement paragraph at the top. Open with the three or four things this person will spend their week doing. Candidates decide whether to keep reading in the first two lines.</p>
+
+        <h2>Give a real salary range</h2>
+        <p>Listings with a stated range get meaningfully more applicants than listings without one. A wide range is fine — a missing one is not.</p>
+
+        <h2>Separate must-haves from nice-to-haves</h2>
+        <p>A single long list of requirements discourages qualified people who do not check every box. Split it into what is required and what is a bonus.</p>
+
+        <h2>Keep it under 400 words</h2>
+        <p>Long listings do not get read closely, they get skimmed and abandoned. Cut anything that belongs in an offer letter or handbook instead.</p>
+
+        <h2>Say how and when you will respond</h2>
+        <p>A single line — for example, "We review applications within 3 business days" — reduces drop-off, because candidates are not left guessing whether to keep looking elsewhere.</p>
+      </div>
+    `,
+
+    'salary-data': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Resources</div>
+        <h1 class="subpage-h1">Typical pay ranges on Roster</h1>
+        <p class="subpage-lede">Sample figures for demonstration, based on the roles used elsewhere on this site.</p>
+        <div class="subpage-disclaimer">These numbers are illustrative placeholder data for this demo, not live market figures. Actual pay varies by location, company size, and experience.</div>
+
+        <div class="salary-row"><span>Support Engineer</span><span>$65,000 &ndash; $85,000</span></div>
+        <div class="salary-row"><span>Warehouse Team Lead</span><span>$52,000 &ndash; $61,000</span></div>
+        <div class="salary-row"><span>Product Designer</span><span>$90,000 &ndash; $115,000</span></div>
+        <div class="salary-row"><span>Registered Nurse</span><span>$68,000 &ndash; $92,000</span></div>
+        <div class="salary-row"><span>Delivery Driver</span><span>$41,000 &ndash; $52,000</span></div>
+        <div class="salary-row"><span>Administrative Assistant</span><span>$38,000 &ndash; $48,000</span></div>
+      </div>
+    `,
+
+    'help-center': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Resources</div>
+        <h1 class="subpage-h1">Help center</h1>
+        <p class="subpage-lede">Answers to what people ask most about posting and applying.</p>
+
+        <details class="faq-item">
+          <summary>How do I post a job?</summary>
+          <p>Click "Post a job" in the navigation or hero, fill in the title, company, location, and pay range, then publish. It appears in Open roles immediately.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How does candidate matching work?</summary>
+          <p>Applications are scored against the requirements in your listing, so the strongest fits surface first instead of getting lost in a plain chronological queue.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do candidates apply?</summary>
+          <p>They click "Easily apply" on any listing, add their name, email, and an optional note, and the hiring team is notified right away.</p>
+        </details>
+        <details class="faq-item">
+          <summary>Can I change plans later?</summary>
+          <p>Yes. You can move between Starter, Growth, and Scale at any time from the Pricing section — changes take effect on your next billing cycle.</p>
+        </details>
+        <details class="faq-item">
+          <summary>How do I reach a real person?</summary>
+          <p>Use the Contact page linked in the footer, or email the address listed there.</p>
+        </details>
+      </div>
+    `,
+
+    'about': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Company</div>
+        <h1 class="subpage-h1">About Roster</h1>
+        <p class="subpage-lede">Hiring software built by people who were tired of slow hiring.</p>
+
+        <p>Roster started as a side project between two hiring managers who kept losing strong candidates to slower processes. What began as a shared spreadsheet turned into a small platform, and eventually into this one.</p>
+
+        <p>The product still follows the same idea it started with: a hiring team should be able to post a role, see who actually fits it, and move to an offer without switching between five different tools to do it.</p>
+
+        <p>Roster is used by small teams hiring their first few employees and by larger operations teams filling dozens of roles a month. The product changes to fit that range — the goal underneath it does not.</p>
+      </div>
+    `,
+
+    'careers': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Company</div>
+        <h1 class="subpage-h1">Careers at Roster</h1>
+        <p class="subpage-lede">We are a small team building hiring software. These are open roles at Roster itself.</p>
+      </div>
+      <div class="subpage-role">
+        <div>
+          <h3>Backend Engineer</h3>
+          <p>Remote &middot; Full-time &middot; $110,000 &ndash; $140,000</p>
+        </div>
+        <button class="role-apply" onclick="openApply('Backend Engineer','Roster')">Easily apply</button>
+      </div>
+      <div class="subpage-role">
+        <div>
+          <h3>Customer Support Lead</h3>
+          <p>Remote &middot; Full-time &middot; $70,000 &ndash; $85,000</p>
+        </div>
+        <button class="role-apply" onclick="openApply('Customer Support Lead','Roster')">Easily apply</button>
+      </div>
+      <div class="subpage-role">
+        <div>
+          <h3>Product Marketing Manager</h3>
+          <p>New York, NY &middot; Full-time &middot; $95,000 &ndash; $120,000</p>
+        </div>
+        <button class="role-apply" onclick="openApply('Product Marketing Manager','Roster')">Easily apply</button>
+      </div>
+    `,
+
+    'contact': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Company</div>
+        <h1 class="subpage-h1">Contact us</h1>
+        <p class="subpage-lede">Questions about your account, billing, or a listing — we read every message.</p>
+      </div>
+      <div class="contact-info">
+        <div class="row">
+          <svg viewBox="0 0 24 24" fill="none"><path d="M4 5h16v14H4V5z" stroke="currentColor" stroke-width="1.6"/><path d="M4 6l8 7 8-7" stroke="currentColor" stroke-width="1.6"/></svg>
+          <span>support@roster.example</span>
+        </div>
+        <div class="row">
+          <svg viewBox="0 0 24 24" fill="none"><circle cx="12" cy="12" r="9.2" stroke="currentColor" stroke-width="1.6"/><path d="M12 7v5l3.5 2" stroke="currentColor" stroke-width="1.6" stroke-linecap="round"/></svg>
+          <span>Replies within 1 business day</span>
+        </div>
+      </div>
+      <form onsubmit="submitContact(event)">
+        <div class="field-group"><label for="ctName">Name</label><input id="ctName" type="text" required></div>
+        <div class="field-group"><label for="ctEmail">Email</label><input id="ctEmail" type="email" required></div>
+        <div class="field-group"><label for="ctMessage">Message</label><textarea id="ctMessage" placeholder="How can we help?" required></textarea></div>
+        <button type="submit" class="modal-submit" style="width:auto;padding:13px 28px;">Send message</button>
+      </form>
+    `,
+
+    'privacy': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Legal</div>
+        <h1 class="subpage-h1">Privacy policy</h1>
+        <div class="subpage-disclaimer">This is placeholder policy text for demonstration purposes only. Replace it with a policy reviewed by qualified counsel before using this site with real users or real data.</div>
+
+        <h2>Information we collect</h2>
+        <p>When you post a job or apply to one, we collect the details you provide directly, such as your name, email address, and the content of your listing or application.</p>
+
+        <h2>How we use it</h2>
+        <p>We use this information to operate the matching and messaging features described on this site, and to communicate with you about your account.</p>
+
+        <h2>Cookies</h2>
+        <p>This demo site does not set tracking cookies. A production version of Roster would describe its actual cookie use here.</p>
+
+        <h2>Your choices</h2>
+        <p>You can request that your information be corrected or removed by contacting us using the details on the Contact page.</p>
+      </div>
+    `,
+
+    'terms': `
+      <div class="subpage-section">
+        <div class="section-eyebrow mono">Legal</div>
+        <h1 class="subpage-h1">Terms of service</h1>
+        <div class="subpage-disclaimer">This is placeholder terms-of-service text for demonstration purposes only. Replace it with terms reviewed by qualified counsel before using this site with real users.</div>
+
+        <h2>Using Roster</h2>
+        <p>By posting a listing or submitting an application through this site, you agree to provide accurate information and to use the service for genuine hiring purposes.</p>
+
+        <h2>Accounts</h2>
+        <p>You are responsible for activity that happens under your account and for keeping your login details secure.</p>
+
+        <h2>Payments</h2>
+        <p>Paid plans are billed on a recurring basis until cancelled. Prices and features are described on the Pricing section of this site.</p>
+
+        <h2>Changes to these terms</h2>
+        <p>We may update these terms from time to time. Continued use of the service after a change means you accept the updated terms.</p>
+      </div>
+    `
+  };
+
+  function showSubpage(key){
+    document.querySelectorAll('.nav-drop').forEach(function(el){el.classList.remove('open');});
+    document.getElementById('mainContent').style.display = 'none';
+    document.getElementById('subpageContent').innerHTML = subpageTemplates[key] || '<p>Page not found.</p>';
+    document.getElementById('subpageView').style.display = 'block';
+    window.scrollTo({top: 0, behavior: reduceMotion ? 'auto' : 'smooth'});
+  }
+
+  function hideSubpage(){
+    document.getElementById('subpageView').style.display = 'none';
+    document.getElementById('mainContent').style.display = 'block';
+    window.scrollTo({top: 0, behavior: 'auto'});
+  }
+
+  function submitContact(e){
+    e.preventDefault();
+    closeModal();
+    showToast('Message sent. The Roster team will get back to you soon.');
+    e.target.reset();
+  }
+
+  /* ---------- INIT ---------- */
+  renderJobs();
+</script>
+
+</body>
+</html>
